@@ -4,7 +4,8 @@
   "description": "API for phonebook",
   "main": "index.js",
   "engines": {
-    "node": "15.8.0"
+    "node": "15.8.0",
+    "npm": "7.14.0"
   },
   "scripts": {
     "start": "node index.js",
