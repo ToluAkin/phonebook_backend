@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "deploy": "git add . && git commit -m 'deploy script added' && git push heroku master",
+    "deploy:heroku": "git add . && git commit -m 'deploy script added' && git push heroku master",
+    "deploy:github": "git add . && git commit -m 'connected mongodb' && git push origin main",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -21,7 +22,9 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "mongoose": "^5.12.13",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
