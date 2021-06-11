@@ -4,7 +4,7 @@ const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
 
-const Person = require('./models/persons')
+const Persons = require('./models/persons')
 
 // to use and allow for requests from all origins
 app.use(cors())
@@ -44,38 +44,43 @@ app.use(express.static('build'))
 // ]
 
 // get all persons
-app.get('/api/persons', (req, res) => {
-    Person.find({}).then(result => {
-        return res.json(result)
-    })
+app.get('/api/persons', (req, res, next) => {
+    Persons.find({})
+        .then(result => {
+            return res.json(result)
+        })
+        .catch(error => next(error))
 })
 
 //Display a page
-app.get('/info', (req, res) => {
-    Person.find({}).then(persons => {
-        const text = `<div><p>Phonebook info has ${persons.length} people</p>
-                 <p>${new Date}</p></div>`
-        res.send(text)
-    })
+app.get('/info', (req, res, next) => {
+    Persons.find({})
+        .then(persons => {
+            const text = `<div><p>Phonebook info has ${persons.length} people</p>
+                    <p>${new Date}</p></div>`
+            res.send(text)
+        })
+        .catch(error => next(error))
 })
 
 //get person by id
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
     const id = req.params.id
-    Person.findById(id)
+    Persons.findById(id)
         .then(person => {
             if (person) {
                 res.json(person)
             } else {
                 res.status(404).end()
             }
-        }).catch(error => next(error))
+        })
+        .catch(error => next(error))
 })
 
 //delete by id
 app.delete('/api/persons/:id', (req, res, next) => {
     const id = req.params.id
-    Person.findByIdAndRemove(id)
+    Persons.findByIdAndRemove(id)
         .then(result => {
             res.status(204).end()
         })
@@ -83,31 +88,35 @@ app.delete('/api/persons/:id', (req, res, next) => {
 })
 
 //add person to the phonebook
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     let content = req.body
 
     if (content.name === '' || content.number === '') {
         res.json({error: 'content is missing'}).status(400)
     } else {
-        const person = new Person({
-            "id": Math.floor(Math.random() * 10000),
-            "name": content.name,
-            "number": content.number
-        })
-        // let checkExisting = persons.filter(
-        //     existingPerson => existingPerson.name.toLowerCase().includes(person.name.toLowerCase()))
-        
-        // if (checkExisting.length) {
-        //     res.json({error: 'name must be unique'}).status(400).end()
-        // } else {
-
-            // person.id = 
-            // persons = persons.concat(person)
-
-            person.save().then(savedPerson => {
-                res.json(savedPerson)
+        Persons.find({ name: content.name })
+            .then(existingPerson => {
+                if (existingPerson.length) {
+                    const id = existingPerson[0].id
+                    Persons.findByIdAndUpdate(id, content, { new: true })
+                        .then(updatedPerson => {
+                            res.json(updatedPerson)
+                        })
+                        .catch(error => next(error))
+                } else {
+                    const person = new Persons({
+                        "identifier": Math.floor(Math.random() * 10000),
+                        "name": content.name,
+                        "number": content.number
+                    })
+                    person.save()
+                        .then(savedPerson => {
+                            res.json(savedPerson)
+                        })
+                        .catch(error => next(error))
+                }
             })
-        // }
+            .catch(error => next(error))
     } 
 })
 

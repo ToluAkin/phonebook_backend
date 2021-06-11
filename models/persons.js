@@ -14,7 +14,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
 const personSchema = new mongoose.Schema({
     "name": String,
     "number": String,
-    "id": Number
+    "identifier": Number
 })
 
 personSchema.set('toJSON', {
@@ -25,4 +25,4 @@ personSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Person', personSchema)
+module.exports = mongoose.model('Persons', personSchema)

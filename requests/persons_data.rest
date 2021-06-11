@@ -4,32 +4,25 @@ GET http://localhost:3001/api/persons HTTP/1.1
 GET http://localhost:3001/info HTTP/1.1
 
 ###
-GET http://localhost:3001/api/persons/1 HTTP/1.1
+GET http://localhost:3001/api/persons/60c32be696a51638c6c0ae89 HTTP/1.1
 
 ###
-DELETE http://localhost:3001/api/persons/6859 HTTP/1.1
+DELETE http://localhost:3001/api/persons/60c31e0c258854273db0d7e4 HTTP/1.1
 
 ###
 POST http://localhost:3001/api/persons HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Arto Hellas",
-    "number": "040-123456",
-    "id": 1
-},
+  "name": "Bobby Lashes",
+  "number": "0707836272"
+}
+
+###
+PUT http://localhost:3001/api/persons/60c35095a37b5a44e4a78ca0 HTTP/1.1
+content-type: application/json
+
 {
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
-    "id": 2
-},
-{
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-    "id": 3
-},
-{
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122",
-    "id": 4
+  "number": "09088788",
+  "name": "Bobby Lashes"
 }
