@@ -4,9 +4,8 @@ if (process.argv.length < 3) {
     console.log('Please provide the password as an argument: node mongo.js <password>')
     process.exit(1)
 }
-//e40YytB80ebguNLU
-const password = process.argv[2]
-const url = `mongodb+srv://fullstack_api:e40YytB80ebguNLU@cluster0.sar1s.mongodb.net/phonebook?retryWrites=true&w=majority`
+
+const url = process.env.MONGODB_URI
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
@@ -38,9 +37,3 @@ Person.find({}).then(result => {
     });
     mongoose.connection.close()
 })
-
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
