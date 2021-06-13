@@ -5,7 +5,6 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 const Persons = require('./models/persons')
-const { request } = require('express')
 
 // to use and allow for requests from all origins
 app.use(cors())
@@ -71,6 +70,7 @@ app.put('/api/persons/:id', (req, res, next) => {
 app.delete('/api/persons/:id', (req, res, next) => {
     const id = req.params.id
     Persons.findByIdAndRemove(id)
+        // eslint-disable-next-line no-unused-vars
         .then(result => {
             res.status(204).end()
         })
@@ -82,7 +82,7 @@ app.post('/api/persons', (req, res, next) => {
     let content = req.body
 
     if (content.name === '' || content.number === '') {
-        res.json({error: 'content is missing'}).status(400)
+        res.json({ error: 'content is missing' }).status(400)
     } else {
         Persons.find({ name: content.name })
             .then(existingPerson => {
@@ -96,9 +96,9 @@ app.post('/api/persons', (req, res, next) => {
                         .catch(error => next(error))
                 } else {
                     const person = new Persons({
-                        "identifier": Math.floor(Math.random() * 10000),
-                        "name": content.name,
-                        "number": content.number
+                        'identifier': Math.floor(Math.random() * 10000),
+                        'name': content.name,
+                        'number': content.number
                     })
                     person.save()
                         .then(savedPerson => savedPerson.toJSON())
@@ -109,35 +109,36 @@ app.post('/api/persons', (req, res, next) => {
                 }
             })
             .catch(error => next(error))
-    } 
+    }
 })
 
 
 /**
  * checks if the error is a CastError exception
- * @param {*} error 
- * @param {*} request 
- * @param {*} response 
- * @param {*} next 
- * @returns 
+ * @param {*} error
+ * @param {*} request
+ * @param {*} response
+ * @param {*} next
+ * @returns
  */
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+    console.error(error.message)
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
-  }
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
+    }
 
-  next(error)
+    next(error)
 }
 
 // this has to be the last loaded middleware.
 app.use(errorHandler)
 
 //Setting a port for the application
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`)
 })

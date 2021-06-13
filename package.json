@@ -12,6 +12,7 @@
     "dev": "nodemon index.js",
     "deploy:heroku": "git add . && git commit -m 'deploy script added' && git push heroku master",
     "deploy:github": "rm -rf build && git add . && git commit -m 'connected mongodb' && git push origin main",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -29,6 +30,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^7.28.0",
     "nodemon": "^2.0.7"
   }
 }
