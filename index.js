@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 const Persons = require('./models/persons')
+const { request } = require('express')
 
 // to use and allow for requests from all origins
 app.use(cors())
@@ -48,6 +49,20 @@ app.get('/api/persons/:id', (req, res, next) => {
             } else {
                 res.status(404).end()
             }
+        })
+        .catch(error => next(error))
+})
+
+// update person by id
+app.put('/api/persons/:id', (req, res, next) => {
+    const id = req.params.id
+    const person = {
+        name: req.body.name,
+        number: req.body.number
+    }
+    Persons.findByIdAndUpdate(id, person, { new: true })
+        .then(updatedPerson => {
+            res.json(updatedPerson)
         })
         .catch(error => next(error))
 })
