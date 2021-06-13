@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 const Persons = require('./models/persons')
+morgan.token('body', function (req) { return JSON.stringify(req.body) })
 
 // to use and allow for requests from all origins
 app.use(cors())
@@ -22,7 +23,7 @@ app.use(express.static('build'))
 app.get('/api/persons', (req, res, next) => {
     Persons.find({})
         .then(result => {
-            return res.json(result)
+            return res.json(result.toJSON())
         })
         .catch(error => next(error))
 })
@@ -44,7 +45,7 @@ app.get('/api/persons/:id', (req, res, next) => {
     Persons.findById(id)
         .then(person => {
             if (person) {
-                res.json(person)
+                res.json(person.toJSON())
             } else {
                 res.status(404).end()
             }
