@@ -23,7 +23,7 @@ app.use(express.static('build'))
 app.get('/api/persons', (req, res, next) => {
     Persons.find({})
         .then(result => {
-            return res.json(result.toJSON())
+            return res.json(result)
         })
         .catch(error => next(error))
 })
@@ -45,7 +45,7 @@ app.get('/api/persons/:id', (req, res, next) => {
     Persons.findById(id)
         .then(person => {
             if (person) {
-                res.json(person.toJSON())
+                res.json(person)
             } else {
                 res.status(404).end()
             }
