@@ -10,8 +10,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "deploy:build-heroku": "git add -f build",
-    "deploy:heroku": "git add . && git commit -m 'build files added' && git push heroku master",
+    "deploy:build-heroku": "",
+    "deploy:heroku": "git add -f build && git commit -m 'build files added' && git push heroku main",
     "deploy:github": "rm -rf build && git add . && git commit -m 'removed build files' && git push origin main",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
